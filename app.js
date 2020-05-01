@@ -15,8 +15,8 @@ function setupNextQuestion() {
     $("<div/>", {
         "id": "q_" + (count + 1),
         "class": "inner-grid inner-grid-" + className + " fade-in",
-        "style": "grid-row-start:" + orientation[count].split("~")[0] + "; grid-row-end:" + orientation[count].split("~")[1] +
-            "; grid-column-start:" + orientation[count].split("~")[2] + "; grid-column-end:" + orientation[count].split("~")[3] + ";"
+        "style": "grid-row-start:" + orientation[count][0].split("~")[0] + "; grid-row-end:" + orientation[count][0].split("~")[1] +
+            "; grid-column-start:" + orientation[count][0].split("~")[2] + "; grid-column-end:" + orientation[count][0].split("~")[3] + ";"
     }).append($("<div/>", {
         "class": "inner-grid-section_a"
     }).append($("<label/>").text(data[selection][count].number)))
@@ -244,8 +244,8 @@ function setupScoreChecker() {
     if (scoreCounterBoxes < 25) {
         $("<div/>", {
             "id": "score-" + (scoreCounterBoxes + 1),
-            "style": "padding: 5px; grid-row-start:" + orientation[scoreCounterBoxes].split("~")[0] + "; grid-row-end:" + orientation[scoreCounterBoxes].split("~")[1] +
-                "; grid-column-start:" + orientation[scoreCounterBoxes].split("~")[2] + "; grid-column-end:" + orientation[scoreCounterBoxes].split("~")[3] + ";"
+            "style": "padding: 5px; grid-row-start:" + orientation[scoreCounterBoxes][0].split("~")[0] + "; grid-row-end:" + orientation[scoreCounterBoxes][0].split("~")[1] +
+                "; grid-column-start:" + orientation[scoreCounterBoxes][0].split("~")[2] + "; grid-column-end:" + orientation[scoreCounterBoxes][0].split("~")[3] + ";"
         }).append($("<label/>").text(scoreCounterBoxes + 1))
             .appendTo($("#score-checker-graph"));
         scoreCounterBoxes++;

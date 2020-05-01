@@ -4,7 +4,7 @@
 }
 
 body {
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 /* navigation bar styles */
@@ -46,7 +46,7 @@ body {
   padding: 10px;
   justify-content: stretch;
   grid-gap: 50px;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 /*quiz container styles*/
@@ -209,7 +209,7 @@ body {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.2);
   margin: 5px;
   color: white;
-  padding: 7px;
+  padding: 12px;
 }
 
 #set-1,
@@ -258,7 +258,7 @@ body {
   outline: none;
   cursor: pointer;
   color: black;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 .line-box {
@@ -287,7 +287,7 @@ input:focus+.line-box .line {
   top: -1.6em;
   padding: 10px;
   position: absolute;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
   font-size: .8em;
   letter-spacing: 1px;
   color: #E45865;
@@ -309,7 +309,7 @@ input:focus+.line-box .line {
   border-radius: 30px;
   cursor: pointer;
   margin-top: 5px;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 #answer:hover {
@@ -583,7 +583,7 @@ input:focus+.line-box .line {
   top: 50%;
   transform: translateY(-50%);
   font-size: 22px;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
   text-align: center;
 }
 
@@ -615,7 +615,7 @@ input:focus+.line-box .line {
   border-radius: 30px;
   cursor: pointer;
   margin-top: 5px;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 #overlay-close-button:hover {
@@ -632,7 +632,7 @@ footer {
   bottom: 0;
   z-index: 10;
   background: #e45865;
-  font-family: cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 footer a,
