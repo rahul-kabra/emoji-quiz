@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="navbar-container">
+        <h1 id="site-description">Emoji Quiz</h1>
+        <div id="github-link">
+            <p>
+                <a href="https://rahul-kabra.github.io/emoji-quiz/" target="_blank">
+                    <span class="fa fa-github">
+                    </span>
+                </a>
+            </p>
+        </div>
+        <div id="about">
+            <p><span class="fa fa-info-circle"></span></p>
+        </div>
+    </div>
+
+    <div id="main-design-container">
+        <div id="sidebar-container">
+            <div>
+                <div id="static-container" style="text-align: center;
+                padding: 5px 10px;">
+                    <p>Wassup? 👋</p>
+                    <p>There are five different quiz sets each comprising of 25 questions.</p>
+                    <p>Each question constitutes a set of emojis and a clue. Your task is simple - to answer all 25
+                        questions.</p>
+                    <p>Click on the <span><i class="fa fa-lock"></i></span> of each question to see the clue and click
+                        on <span><i class="fa fa-unlock-alt"></i></span> to hide it again.</p>
+                    <p>So, just select a set and get going.</p>
+                    <div id="quiz-set-container">
+                        <label id="set-1" onclick="setupQuizGrid(this)">
+                            <span>1</span>
+                        </label>
+
+                        <label id="set-2" onclick="setupQuizGrid(this)">
+                            <span>2</span>
+                        </label>
+
+                        <label id="set-3" onclick="setupQuizGrid(this)">
+                            <span>3</span>
+                        </label>
+
+                        <label id="set-4" onclick="setupQuizGrid(this)">
+                            <span>4</span>
+                        </label>
+
+                        <label id="set-5" onclick="setupQuizGrid(this)">
+                            <span>5</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="dynamic-container" style="padding: 10px;">
+
+                    <div id="data-container">
+                        <div id="input-container" class="input-field">
+                            <label>
+                                <p class="label-txt" style="padding-left: 0;">Enter answers here..</p>
+                                <input type="text" id="input-data" class="input" style="padding-left: 0;"
+                                    onkeydown="checkVal()">
+                                <div class="line-box">
+                                    <div class="line"></div>
+                                </div>
+                            </label>
+                            <button id="answer" onclick="onAnswerSubmit()"><span>Submit</span></button>
+                        </div>
+                    </div>
+
+                    <div id="answer-message-container">
+                        <p id="answer-message"></p>
+                    </div>
+
+                    <div id="score-checker">
+                        <div id="score-checker-counter">
+                            <div id="answer-score-container">
+                                <div>
+                                    <label>Your Score: </label>
+                                    <p id="score-counter">
+                                        0
+                                    </p>
+                                </div>
+                                <div>
+                                    <label>Target: </label>
+                                    <p id="score-target">
+                                        25
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="quiz-container">
+            <div id="empty-quiz-container-message">
+                <p>Please select a set to start answering.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <nav class="overlay-menu">
+            <p>Emojis have become an essential part in our everyday lives.</p>
+            <p>They are used every instant, everywhere and by everyone.</p>
+            <p>Having said that, test your knowledge about emojis right
+                here. 🎯</p>
+            <p>A fun quiz with a riot of pop colors awaits you.</p>
+            <p id="emoji">Happy Emoji'ng!!! 🎆</p>
+            <br>
+            <button id="overlay-close-button" onclick="closeModal()"><span>Close</span></button>
+        </nav>
+    </div>
+
+    <footer>
+        <p style="padding-bottom: 2px;">Handcrafted with
+            <span style="color: #fcd06b">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+            </span>
+            by <a href="https://github.com/rahul-kabra" target="_blank">Rahul</a></p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./data.js" type="text/javascript"></script>
+    <script src="./app.js" type="text/javascript"></script>
+</body>
+
+</html>
