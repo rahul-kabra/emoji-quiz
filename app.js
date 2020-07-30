@@ -4,135 +4,161 @@ var count = 0;
 var score = 0;
 var selection = 10;
 const totalCount = 25;
-let scoreCounterBoxes = 0;
-let quizSets = [1, 2, 3, 4, 5];
-let quizTaken = [];
+var scoreCounterBoxes = 0;
+var quizSets = [1, 2, 3, 4, 5];
+var quizTaken = [];
+var hitCount = 0;
 
 function setupNextQuestion() {
-    $("#empty-quiz-container-message").remove();
-    $(".loader").remove();
+    let emptyDivElement = !!document.getElementById("empty-quiz-container-message");
+    if (emptyDivElement)
+        document.getElementById("empty-quiz-container-message").remove();
+    let loaderElement = !!document.getElementById("loader");
+    if (loaderElement)
+        document.getElementById("loader").remove();
     let className = (count + 1) % 2 !== 0 ? "dark" : "light";
-    $("<div/>", {
-        "id": "q_" + (count + 1),
-        "class": "inner-grid inner-grid-" + className + " fade-in",
-        "style": "grid-row-start:" + orientation[count][0].split("~")[0] + "; grid-row-end:" + orientation[count][0].split("~")[1] +
-            "; grid-column-start:" + orientation[count][0].split("~")[2] + "; grid-column-end:" + orientation[count][0].split("~")[3] + ";"
-    }).append($("<div/>", {
-        "class": "inner-grid-section_a"
-    }).append($("<label/>").text(data[selection][count].number)))
-        .append($("<div/>", {
-            "class": "inner-grid-section_b"
-        }).append($("<label/>").text(data[selection][count].category)))
-        .append($("<div/>", {
-            "class": "inner-grid-section_c",
-            "id": "clue_" + (count + 1),
-        }).append($("<span/>").append($("<i/>", {
-            "id": "clue-icon-" + (count + 1),
-            "class": "fa fa-lock",
-            "onclick": "revealClue(" + (count + 1) + ")",
-            "style": "cursor: pointer;"
-        }))))
-        .append($("<div/>", {
-            "class": "inner-grid-section_d"
-        }).append($("<label/>").text(data[selection][count].emojis)))
-        .append($("<div/>", {
-            "id": "clue-container-" + (count + 1),
-            "class": "inner-grid-section_e has-animation animation-ltr",
-            "data-delay": "10"
-        }).append($("<p/>", {
-            "class": "bigger"
-        }).text(data[selection][count].clue)))
-        .appendTo($("#quiz-container"));
+
+    let mainDiv = document.createElement("div");
+    mainDiv.id = "q_" + (count + 1);
+    mainDiv.className = "inner-grid inner-grid-" + className + " fade-in";
+    mainDiv.style = "grid-row-start:" + orientation[count][0].split("~")[0] + "; grid-row-end:" + orientation[count][0].split("~")[1] +
+        "; grid-column-start:" + orientation[count][0].split("~")[2] + "; grid-column-end:" + orientation[count][0].split("~")[3] + ";";
+
+    let sectionA = document.createElement("div");
+    sectionA.className = "inner-grid-section_a";
+    let sectionALabel = document.createElement("label");
+    sectionALabel.innerText = data[selection][count].number;
+    sectionA.appendChild(sectionALabel);
+
+    let sectionB = document.createElement("div");
+    sectionB.className = "inner-grid-section_b";
+    let sectionBLabel = document.createElement("label");
+    sectionBLabel.innerText = data[selection][count].category;
+    sectionB.appendChild(sectionBLabel);
+
+    let sectionC = document.createElement("div");
+    sectionC.className = "inner-grid-section_c";
+    sectionC.id = "clue_" + (count + 1);
+    let sectionCSpan = document.createElement("span");
+    let sectionCSpanITag = document.createElement("i");
+    sectionCSpanITag.id = "clue-icon-" + (count + 1);
+    sectionCSpanITag.className = "fa fa-lock";
+    sectionCSpanITag.style = "cursor: pointer;";
+    sectionCSpanITag.onclick = function () {
+        revealClue(this.id.split("-")[2]);
+    }
+    sectionCSpan.appendChild(sectionCSpanITag);
+    sectionC.appendChild(sectionCSpan);
+
+    let sectionD = document.createElement("div");
+    sectionD.className = "inner-grid-section_d";
+    let sectionDLabel = document.createElement("label");
+    sectionDLabel.innerText = data[selection][count].emojis;
+    sectionD.appendChild(sectionDLabel);
+
+    let sectionE = document.createElement("div");
+    sectionE.className = "inner-grid-section_e has-animation animation-ltr";
+    sectionE.id = "clue-container-" + (count + 1);
+    sectionE.setAttribute("data-delay", "10");
+    let sectionEPara = document.createElement("p");
+    sectionEPara.className = "bigger";
+    sectionEPara.innerText = data[selection][count].clue;
+    sectionE.appendChild(sectionEPara);
+
+    mainDiv.appendChild(sectionA);
+    mainDiv.appendChild(sectionB);
+    mainDiv.appendChild(sectionC);
+    mainDiv.appendChild(sectionD);
+    mainDiv.appendChild(sectionE);
+
+    document.getElementById("quiz-container").appendChild(mainDiv);
 }
 
 function onAnswerSubmit() {
-
-    answer = $("#input-data").val().toLowerCase();
+    answer = document.getElementById("input-data").value.toLowerCase();
     if (answer === data[selection][count].answer) {
         result = true;
         score++;
-        $("#score-" + (count + 1)).css("color", "green");
-        var randomNumber = Math.floor(Math.random() * 10);
+        hitCount++;
+        document.getElementById("score-" + (count + 1)).style.color = "green";
+        let randomNumber = Math.floor(Math.random() * 10);
         typewriterEffect(correct[randomNumber]);
     }
     else {
         result = false;
-        $("#score-" + (count + 1)).css("color", "red");
-        var randomNumber = Math.floor(Math.random() * 10);
+        document.getElementById("score-" + (count + 1)).style.color = "red";
+        let randomNumber = Math.floor(Math.random() * 5);
         typewriterEffect(wrong[randomNumber]);
     }
 
-    $("#input-data").val("");
-    $("#input-data").focusout();
-    $("#answer").attr("disabled", true);
-    $("#answer").addClass("disabled");
-    $("#score-counter").text(score);
+    document.getElementById("input-data").value = "";
+    document.getElementById("input-data-label").classList.remove("label-active");
+    document.getElementById("answer").disabled = true;
+    document.getElementById("answer").classList.add("disabled");
+    document.getElementById("score-counter").innerText = score;
     if (score === totalCount && (count + 1) === totalCount) {
-        $("#quiz-container div").remove();
-        $("#quiz-container").addClass("centered");
+        document.getElementById("quiz-container").innerHTML = "";
+        document.getElementById("quiz-container").classList.add("centered");
         createLoader();
-        $(".loader").addClass("loader-style");
+        document.getElementById("loader").classList.add("loader-style");
         setTimeout(() => {
-            $(".loader").remove();
-            $(".loader").removeClass("loader-style");
-            $("#quiz-container").removeClass("centered");
-            $("<div/>", {
-                "id": "empty-quiz-container-message"
-            }).appendTo($("#quiz-container"));
-            $("#empty-quiz-container-message").text("You have done a remarkable job by managing a 100% hit rate. 🥳 Please select a different set now to proceed forward.");
-            $("#score-counter").text(0);
-            $.grep(quizSets, function (index) {
+            document.getElementById("loader").remove();
+            document.getElementById("quiz-container").classList.remove("centered");
+            let div = document.createElement("div");
+            div.id = "empty-quiz-container-message";
+            document.getElementById("quiz-container").appendChild(div);
+            document.getElementById("empty-quiz-container-message").innerText = "You have done a remarkable job by managing a 100% hit rate. 🥳 Please select a different set now to proceed forward.";
+            document.getElementById("score-counter").innerText = 0;
+            quizSets.filter(function (index) {
                 if ((selection + 1) === index) {
-                    $("#set-" + index).css("pointer-events", "none");
-                    $("#set-" + index + "> span").removeClass("fa fa-anchor");
-                    $("#set-" + index + "> span").addClass("fa fa-check-circle");
-                    $("#answer-message").text("");
-                    $("#score-checker-graph").remove();
+                    document.getElementById("set-" + index).style.pointerEvents = "none";
+                    document.getElementById("set-" + index).children[0].classList.remove("fa-anchor");
+                    document.getElementById("set-" + index).children[0].classList.add("fa-check-circle");
+                    document.getElementById("answer-message").innerText = "";
+                    document.getElementById("score-checker-graph").remove();
                 }
                 else {
-                    $("#set-" + index).css("pointer-events", "auto");
+                    document.getElementById("set-" + index).style.pointerEvents = "auto";
                 }
             });
             setTimeout(() => {
-                if (quizTaken.length === 5)
-                    $("#empty-quiz-container-message").text("Well, seems like you have answers to everything. 🎉 Take a bow. 🙌 And for now, you deserve this 🥇.You are a champion. 🏆 We will add more sets in the near future.");
+                if (quizTaken.length === 5 && hitCount == 125)
+                    document.getElementById("empty-quiz-container-message").innerText = "Well, seems like you have answers to everything. 🎉 Take a bow. 🙌 And for now, you deserve this 🥇.You are a champion. 🏆 We will add more sets in the near future.";
+                else if (quizTaken.length === 5)
+                    document.getElementById("empty-quiz-container-message").innerText = "We have run out of quiz sets. You stumped us with your enthusiasm. 👏 We will add more sets in the near future.";
             }, 2000);
         }, 5000);
     }
     else if ((count + 1) === totalCount) {
-        $("#quiz-container div").remove();
-        $("#quiz-container").addClass("centered");
+        document.getElementById("quiz-container").innerHTML = "";
+        document.getElementById("quiz-container").classList.add("centered");
         createLoader();
-        $(".loader").addClass("loader-style");
+        document.getElementById("loader").classList.add("loader-style");
         setTimeout(() => {
-            $(".loader").remove();
-            $(".loader").removeClass("loader-style");
-            $("#quiz-container").removeClass("centered");
-            $("<div/>", {
-                "id": "empty-quiz-container-message"
-            }).appendTo($("#quiz-container"));
-            $("#empty-quiz-container-message").text("You have finished the quiz by managing a " + ((score / totalCount) * 100) + "% hit rate. Please select a different set now to proceed forward.");
-            $("#score-counter").text(0);
-            $.grep(quizSets, function (index) {
+            document.getElementById("loader").remove();
+            document.getElementById("quiz-container").classList.remove("centered");
+            let div = document.createElement("div");
+            div.id = "empty-quiz-container-message";
+            document.getElementById("quiz-container").appendChild(div);
+            document.getElementById("empty-quiz-container-message").innerText = "You have finished the quiz by managing a " + ((score / totalCount) * 100) + "% hit rate. Please select a different set now to proceed forward.";
+            document.getElementById("score-counter").innerText = 0;
+            quizSets.filter(function (index) {
                 if ((selection + 1) === index) {
-                    $("#set-" + index).css("pointer-events", "none");
-                    $("#set-" + index + "> span").removeClass("fa fa-anchor");
-                    $("#set-" + index + "> span").addClass("fa fa-check-circle");
-                    console.log("removing text");
-                    $("#answer-message").text("");
-                    $("#score-checker-graph").remove();
+                    document.getElementById("set-" + index).style.pointerEvents = "none";
+                    document.getElementById("set-" + index).children[0].classList.remove("fa-anchor");
+                    document.getElementById("set-" + index).children[0].classList.add("fa-check-circle");
+                    document.getElementById("answer-message").innerText = "";
+                    document.getElementById("score-checker-graph").remove();
                 }
                 else {
-                    $("#set-" + index).css("pointer-events", "auto");
+                    document.getElementById("set-" + index).style.pointerEvents = "auto";
                 }
             });
             setTimeout(() => {
                 if (quizTaken.length === 5)
-                    $("#empty-quiz-container-message").text("We have run out of quiz sets. You stumped us with your enthusiasm. 👏 We will add more sets in the near future.");
+                    document.getElementById("empty-quiz-container-message").innerText = "We have run out of quiz sets. You stumped us with your enthusiasm. 👏 We will add more sets in the near future.";
             }, 2000);
         }, 5000);
-        if (quizTaken.length === 5)
-            $("#empty-quiz-container-message").text("We have run out of quiz sets. You stumped us with your enthusiasm. We will add more sets in the near future.");
     }
     else {
         count++;
@@ -140,44 +166,35 @@ function onAnswerSubmit() {
     }
 }
 
-$('#input-data').focus(function () {
-    $(this).parent().find(".label-txt").addClass('label-active');
+document.getElementById('input-data').addEventListener("focusin", function () {
+    document.getElementById("input-data-label").classList.add("label-active");
 });
 
-$("#input-data").focusout(function () {
-    if ($(this).val() == '') {
-        $(this).parent().find(".label-txt").removeClass('label-active');
+document.getElementById('input-data').addEventListener("focusout", function () {
+    if (document.getElementById('input-data').value === '') {
+        document.getElementById("input-data-label").classList.remove("label-active");
     };
 });
 
 function checkVal() {
-    if ($("#input-data").val() !== "") {
-        $("#answer").attr("disabled", false);
-        $("#answer").removeClass("disabled");
+    if (document.getElementById('input-data').value !== '') {
+        document.getElementById("answer").disabled = false;
+        document.getElementById("answer").classList.remove("disabled");
     }
     else {
-        $("#answer").attr("disabled", true);
-        $("#answer").addClass("disabled");
+        document.getElementById("answer").disabled = true;
+        document.getElementById("answer").classList.add("disabled");
     }
 }
 
-$(document).ready(function () {
-    if ($("#input-data").val() !== "") {
-        $("#answer").attr("disabled", false);
-        $("#answer").removeClass("disabled");
-    }
-    else {
-        $("#answer").attr("disabled", true);
-        $("#answer").addClass("disabled");
-    }
-});
+window.addEventListener("load", checkVal);
 
 function setupQuizGrid(event) {
     count = 0;
     score = 0;
     scoreCounterBoxes = 0;
-    $("#" + event.id + "> span").text("");
-    $("#" + event.id + "> span").addClass("fa fa-anchor");
+    document.getElementById(event.id).children[0].innerText = "";
+    document.getElementById(event.id).children[0].classList.add("fa", "fa-anchor");
     let choice = parseInt(event.id.split("-")[1]);
     if (choice === 1)
         selection = 0;
@@ -192,97 +209,102 @@ function setupQuizGrid(event) {
 
     quizTaken.push(choice);
 
-    $.grep(quizSets, function (index) {
+    quizSets.filter(function (index) {
         if (choice !== index) {
-            $("#set-" + index).css("pointer-events", "none");
+            document.getElementById("set-" + index).style.pointerEvents = "none";
         }
     });
-    $("#data-container").addClass("fade-in");
+    document.getElementById("data-container").classList.add("fade-in");
     createScoreChecker();
     setupScoreChecker();
-    $("#score-checker").addClass("fade-in");
-    $("#data-container").css("opacity", 1);
-    $("#score-checker").css("opacity", 1);
-    $("#empty-quiz-container-message").text("You have selected set " + choice + ". Please wait while we set up the quiz deck.");
+    document.getElementById("score-checker").classList.add("fade-in");
+    document.getElementById("data-container").style.opacity = 1;
+    document.getElementById("score-checker").style.opacity = 1;
+    document.getElementById("empty-quiz-container-message").innerText = "You have selected set " + choice + ". Please wait while we set up the quiz deck.";
     createLoader();
     setTimeout(setupNextQuestion, 3000);
 }
 
 function revealClue(index) {
-    if ($("#clue-icon-" + index).hasClass("fa-lock")) {
-        $("#clue-icon-" + index).removeClass("fa-lock").addClass("fa-unlock-alt");
+    if (document.getElementById("clue-icon-" + index).classList.contains("fa-lock")) {
+        document.getElementById("clue-icon-" + index).classList.remove("fa-lock");
+        document.getElementById("clue-icon-" + index).classList.add("fa-unlock-alt");
 
-        $("#clue-container-" + index).removeClass("has-animation-active")
-        $("#clue-container-" + index).removeClass('animation-rtl');
-        $("#clue-container-" + index).removeClass('animate-out');
+        document.getElementById("clue-container-" + index).classList.remove("has-animation-active");
+        document.getElementById("clue-container-" + index).classList.remove("animation-rtl");
+        document.getElementById("clue-container-" + index).classList.remove("animate-out");
 
-        $("#clue-container-" + index).addClass('animate-in');
-        $("#clue-container-" + index).addClass('animation-ltr');
-        $("#clue-container-" + index).addClass('has-animation');
+        document.getElementById("clue-container-" + index).classList.add("animate-in");
+        document.getElementById("clue-container-" + index).classList.add("animation-ltr");
+        document.getElementById("clue-container-" + index).classList.add("has-animation");
     }
-    else if ($("#clue-icon-" + index).hasClass("fa-unlock-alt")) {
-        $("#clue-icon-" + index).removeClass("fa-unlock-alt").addClass("fa-lock");
+    else if (document.getElementById("clue-icon-" + index).classList.contains("fa-unlock-alt")) {
+        document.getElementById("clue-icon-" + index).classList.remove("fa-unlock-alt");
+        document.getElementById("clue-icon-" + index).classList.add("fa-lock");
 
-        $("#clue-container-" + index).removeClass('animate-in');
-        $("#clue-container-" + index).removeClass('animation-ltr');
-        $("#clue-container-" + index).removeClass('has-animation');
+        document.getElementById("clue-container-" + index).classList.remove("animate-in");
+        document.getElementById("clue-container-" + index).classList.remove("animation-ltr");
+        document.getElementById("clue-container-" + index).classList.remove("has-animation");
 
-        $("#clue-container-" + index).addClass("has-animation-active")
-        $("#clue-container-" + index).addClass('animation-rtl');
-        $("#clue-container-" + index).addClass('animate-out');
+        document.getElementById("clue-container-" + index).classList.add("has-animation-active");
+        document.getElementById("clue-container-" + index).classList.add("animation-rtl");
+        document.getElementById("clue-container-" + index).classList.add("animate-out");
     }
-};
+}
 
 function createScoreChecker() {
-    $("<div/>", {
-        "id": "score-checker-graph"
-    })
-        .appendTo($("#score-checker"));
+    let div = document.createElement("div");
+    div.id = "score-checker-graph";
+    document.getElementById("score-checker").appendChild(div);
 }
 
 function setupScoreChecker() {
     if (scoreCounterBoxes < 25) {
-        $("<div/>", {
-            "id": "score-" + (scoreCounterBoxes + 1),
-            "style": "padding: 5px; grid-row-start:" + orientation[scoreCounterBoxes][0].split("~")[0] + "; grid-row-end:" + orientation[scoreCounterBoxes][0].split("~")[1] +
-                "; grid-column-start:" + orientation[scoreCounterBoxes][0].split("~")[2] + "; grid-column-end:" + orientation[scoreCounterBoxes][0].split("~")[3] + ";"
-        }).append($("<label/>").text(scoreCounterBoxes + 1))
-            .appendTo($("#score-checker-graph"));
+        let div = document.createElement("div");
+        div.id = "score-" + (scoreCounterBoxes + 1);
+        div.style = "padding: 5px; grid-row-start:" + orientation[scoreCounterBoxes][0].split("~")[0] + "; grid-row-end:" + orientation[scoreCounterBoxes][0].split("~")[1] +
+            "; grid-column-start:" + orientation[scoreCounterBoxes][0].split("~")[2] + "; grid-column-end:" + orientation[scoreCounterBoxes][0].split("~")[3] + ";";
+        let divLabel = document.createElement("label");
+        divLabel.innerText = scoreCounterBoxes + 1;
+        div.appendChild(divLabel);
+        document.getElementById("score-checker-graph").appendChild(div);
         scoreCounterBoxes++;
         setupScoreChecker();
     }
 }
 
-$('#about').click(function () {
-    $('#overlay').addClass('open');
+document.getElementById("about").addEventListener("click", function () {
+    document.getElementById("overlay").classList.add("open");
 });
 
 function closeModal() {
-    $('#overlay').removeClass('open');
+    document.getElementById("overlay").classList.remove("open");
 }
 
 function typewriterEffect(data) {
-    var result = "";
+    let result = "";
     for (let i = 0; i < data[0].length; i++) {
         setTimeout(function () {
             result += data[0][i];
-            $("#answer-message").html(result);
+            document.getElementById("answer-message").innerHTML = result;
         }, 50 * i);
     }
 }
 
-
 function createLoader() {
-    $("<div/>", {
-        "class": "loader"
-    }).append($("<div/>", {
-        "class": "loader-icon"
-    })).append($("<div/>", {
-        "class": "loader-icon loader-delay"
-    })).append($("<div/>", {
-        "class": "loader-icon loader-delay"
-    })).append($("<div/>", {
-        "class": "loader-icon"
-    }))
-        .appendTo($("#quiz-container"));
+    let div = document.createElement("div");
+    div.id = "loader";
+    let iconDivFirst = document.createElement("div");
+    iconDivFirst.className = "loader-icon";
+    let iconDivSecond = document.createElement("div");
+    iconDivSecond.className = "loader-icon loader-delay";
+    let iconDivThird = document.createElement("div");
+    iconDivThird.className = "loader-icon loader-delay";
+    let iconDivFourth = document.createElement("div");
+    iconDivFourth.className = "loader-icon";
+    div.appendChild(iconDivFirst);
+    div.appendChild(iconDivSecond);
+    div.appendChild(iconDivThird);
+    div.appendChild(iconDivFourth);
+    document.getElementById("quiz-container").appendChild(div);
 }

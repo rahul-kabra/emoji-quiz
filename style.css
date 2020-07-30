@@ -3,6 +3,28 @@
   box-sizing: border-box;
 }
 
+/* Firefox Scrollbar Hack */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fcd06b #f7f6ee;
+}
+
+/* Chrome/Edge/Safari Scrollbar Hack */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #f7f6ee;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #fcd06b;
+  border-radius: 20px;
+  border: 3px solid #f7f6ee;
+}
+
+
 body {
   font-family: "Comfortaa", cursive;
 }
@@ -653,7 +675,7 @@ footer p {
   }
 }
 
-.loader {
+#loader {
   display: grid;
   grid-template-columns: repeat(2, 25px);
   grid-template-rows: repeat(2, 25px);
@@ -789,7 +811,7 @@ footer p {
     position: inherit !important;
   }
 
-  .loader {
+  #loader {
     position: inherit !important;
     top: auto !important;
     left: auto !important;
@@ -848,7 +870,7 @@ footer p {
     position: inherit !important;
   }
 
-  .loader {
+  #loader {
     position: inherit !important;
     top: auto !important;
     left: auto !important;
